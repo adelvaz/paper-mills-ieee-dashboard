@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paper mills en congresos IEEE · Dashboard</title>
+<meta name="description" content="Dashboard interactivo sobre la venta de autorías y los artículos identificados en congresos IEEE, a partir de los datos abiertos de Abalkina et al. (2026).">
+<meta name="author" content="Ángel M. Delgado-Vázquez">
+<link rel="stylesheet" href="css/theme.css">
+<link rel="stylesheet" href="css/dashboard.css">
+<script src="js/d3.v7.min.js"></script>
+</head>
+<body>
+<div id="dash-root">
+<div class="pm">
+  <header>
+    <h1 class="pm-title" id="titulo">Paper mills en congresos IEEE</h1>
+    <p class="pm-lede"><b data-draw="kpi" data-source="kpis" data-field="articulos" data-row="0">—</b> artículos publicados en <b data-draw="kpi" data-source="kpis" data-field="congresos" data-row="0">—</b> congresos IEEE coinciden con títulos cuya autoría se vendía en redes sociales. Según OpenAlex, <b data-draw="oak" data-source="oa_kpis" data-field="retractados" data-row="0">—</b> de ellos (<b data-draw="oak" data-fmt="pct" data-source="oa_kpis" data-field="pct_retractados" data-row="0">—</b>) ya están retractados, frente a los <b data-draw="kpi" data-source="kpis" data-field="retractados" data-row="0">—</b> que recogía el estudio a finales de junio de 2026.</p>
+    <p class="pm-credit">Dashboard elaborado por <a href="https://orcid.org/0000-0003-2461-8553">Ángel M. Delgado-Vázquez</a> (Biblioteca/CRAI, Universidad Pablo de Olavide) a partir de datos abiertos.</p>
+    <p class="pm-src">Datos de Abalkina, Kunešová, Ozturk y Pirelli (2026), «Opening Pandora’s box: Paper mills in conference proceedings», <i>Accountability in Research</i>, 33(8), <a href="https://doi.org/10.1080/08989621.2026.2733727">doi:10.1080/08989621.2026.2733727</a>. Licencia CC BY-NC-SA 4.0.</p>
+  </header>
+
+  <nav class="pm-tabs" role="tablist" aria-label="Secciones">
+    <button class="pm-tab" role="tab" data-tab="resumen" aria-selected="true">Resumen</button>
+    <button class="pm-tab" role="tab" data-tab="ofertas" aria-selected="false">Ofertas</button>
+    <button class="pm-tab" role="tab" data-tab="congresos" aria-selected="false">Congresos</button>
+    <button class="pm-tab" role="tab" data-tab="articulos" aria-selected="false">Artículos</button>
+    <button class="pm-tab" role="tab" data-tab="coautoria" aria-selected="false">Coautoría</button>
+    <button class="pm-tab" role="tab" data-tab="canales" aria-selected="false">Canales</button>
+    <button class="pm-tab" role="tab" data-tab="paises" aria-selected="false">Países y España</button>
+  </nav>
+
+  <section class="pm-page" id="resumen">
+    <div class="pm-kpis">
+      <div class="pm-card"><p class="pm-kpi-l">Artículos IEEE identificados</p><p class="pm-kpi-v" data-draw="kpi" data-source="kpis" data-field="articulos" data-row="0">—</p><p class="pm-kpi-s"><span data-draw="kpi" data-source="kpis" data-field="articulos_definitely" data-row="0">—</span> seguros · <span data-draw="kpi" data-source="kpis" data-field="articulos_probably" data-row="0">—</span> probables</p></div>
+      <div class="pm-card"><p class="pm-kpi-l">Ofertas IEEE únicas recogidas</p><p class="pm-kpi-v" data-draw="kpi" data-source="kpis" data-field="ofertas_unicas" data-row="0">—</p><p class="pm-kpi-s">Feb. 2021 – dic. 2025</p></div>
+      <div class="pm-card"><p class="pm-kpi-l">Ofertas con artículo identificado</p><p class="pm-kpi-v" data-draw="kpi" data-fmt="pct" data-source="kpis" data-field="pct_ofertas_emparejadas" data-row="0">—</p><p class="pm-kpi-s"><span data-draw="kpi" data-source="kpis" data-field="ofertas_emparejadas" data-row="0">—</span> ofertas</p></div>
+      <div class="pm-card"><p class="pm-kpi-l">Congresos afectados</p><p class="pm-kpi-v" data-draw="kpi" data-source="kpis" data-field="congresos" data-row="0">—</p><p class="pm-kpi-s">Actas publicadas por IEEE</p></div>
+      <div class="pm-card"><p class="pm-kpi-l">Retractados según OpenAlex</p><p class="pm-kpi-v" data-draw="oak" data-source="oa_kpis" data-field="retractados" data-row="0">—</p><p class="pm-kpi-s"><span data-draw="oak" data-fmt="pct" data-source="oa_kpis" data-field="pct_retractados" data-row="0">—</span> de los encontrados · consulta de nov. 2026 (el estudio: <span data-draw="kpi" data-source="kpis" data-field="retractados" data-row="0">—</span> a 29 jun.)</p></div>
+      <div class="pm-card"><p class="pm-kpi-l">Audiencia de los canales</p><p class="pm-kpi-v" data-draw="kpi" data-source="kpis" data-field="audiencia" data-row="0">—</p><p class="pm-kpi-s"><span data-draw="kpi" data-source="kpis" data-field="canales" data-row="0">—</span> canales, seguidores en jul. 2025</p></div>
+    </div>
+    <div class="pm-grid">
+      <div class="pm-card" id="card-anio">
+        <h2 class="pm-h">Ofertas recogidas y artículos identificados por año</h2>
+        <p class="pm-note">Ofertas por año en que se publicó el anuncio; artículos por año del congreso. La recogida empezó en julio de 2025, lo que favorece las ofertas recientes.</p>
+        <ul class="pm-legend"><li><span class="pm-sw" data-draw="sw" data-i="0"></span>Ofertas recogidas</li><li><span class="pm-sw" data-draw="sw" data-i="1"></span>Artículos identificados</li></ul>
+        <div class="pm-chart dash-skeleton" id="ch-anio" data-draw="ch-anio" data-source="por_anio"></div>
+      </div>
+      <div class="pm-card" id="card-retiradas">
+        <h2 class="pm-h">Artículos identificados retractados por año de publicación</h2>
+        <p class="pm-note">Estado de retracción según OpenAlex (consulta de noviembre de 2026). En todos los artículos IEEE marcados, el título publicado empieza ya por «Retracted».</p>
+        <ul class="pm-legend"><li><span class="pm-sw pm-sw-crit"></span>Retractados</li><li><span class="pm-sw" data-draw="sw" data-muted="1"></span>Sin retractar</li></ul>
+        <div class="pm-chart dash-skeleton" id="ch-retiradas" data-draw="ch-retiradas" data-source="oa_retiradas_anio"></div>
+      </div>
+      <div class="pm-card" id="card-top">
+        <h2 class="pm-h">Los 15 congresos con más artículos identificados</h2>
+        <p class="pm-note">Pulsa una barra para ver sus artículos. Las retracciones son las que recogía el estudio a 29 de junio de 2026.</p>
+        <ul class="pm-legend"><li><span class="pm-sw" data-draw="sw" data-i="0"></span>Identificados</li><li><span class="pm-sw pm-sw-crit"></span>De ellos, retractados (junio de 2026)</li></ul>
+        <div class="pm-chart list dash-skeleton" id="ch-top" data-draw="ch-top" data-source="congresos"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pm-page" id="ofertas" hidden>
+    <div class="pm-kpis">
+      <div class="pm-card"><p class="pm-kpi-l">Título publicado idéntico al ofertado</p><p class="pm-kpi-v" data-draw="kpi" data-fmt="pct" data-source="kpis" data-field="pct_titulo_identico" data-row="0">—</p><p class="pm-kpi-s">Distancia de Levenshtein 0, sin contar mayúsculas ni puntuación</p></div>
+      <div class="pm-card"><p class="pm-kpi-l">Mediana entre oferta y congreso</p><p class="pm-kpi-v" data-draw="desf" data-fmt="dias" data-source="desfase_resumen" data-field="mediana" data-row="0">—</p><p class="pm-kpi-s">Rango intercuartílico: <span data-draw="desf" data-source="desfase_resumen" data-field="p25" data-row="0">—</span> a <span data-draw="desf" data-source="desfase_resumen" data-field="p75" data-row="0">—</span> días</p></div>
+      <div class="pm-card"><p class="pm-kpi-l">Ofertas publicadas después del congreso</p><p class="pm-kpi-v" data-draw="desf" data-source="desfase_resumen" data-field="posteriores" data-row="0">—</p><p class="pm-kpi-s">Artículos ya aceptados o presentados</p></div>
+    </div>
+    <div class="pm-grid">
+      <div class="pm-card wide" id="card-mes">
+        <h2 class="pm-h">Ofertas por mes</h2>
+        <ul class="pm-legend"><li><span class="pm-sw" data-draw="sw" data-i="0"></span>Con artículo identificado</li><li><span class="pm-sw" data-draw="sw" data-muted="1"></span>Sin identificar</li></ul>
+        <div class="pm-chart dash-skeleton" id="ch-mes" data-draw="ch-mes" data-source="ofertas_mes"></div>
+      </div>
+      <div class="pm-card" id="card-plazas">
+        <h2 class="pm-h">Plazas de autor anunciadas por oferta</h2>
+        <p class="pm-note">«&gt;=5» significa al menos cinco plazas: el anuncio no deja claro si había más.</p>
+        <div class="pm-chart list dash-skeleton" id="ch-plazas" data-draw="ch-plazas" data-source="plazas"></div>
+      </div>
+      <div class="pm-card" id="card-desfase">
+        <h2 class="pm-h">Días entre la oferta y el congreso</h2>
+        <p class="pm-note">Ofertas con artículo identificado, en tramos de 30 días. Los valores negativos son ofertas posteriores al congreso.</p>
+        <div class="pm-chart dash-skeleton" id="ch-desfase" data-draw="ch-desfase" data-source="desfase"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pm-page" id="congresos" hidden>
+    <div class="pm-grid">
+      <div class="pm-card" id="card-disp">
+        <h2 class="pm-h">Artículos identificados frente a artículos de seis autores</h2>
+        <p class="pm-note">Cada círculo es un congreso, con tamaño según sus artículos identificados. Solo congresos con total de artículos en Crossref (febrero de 2026).</p>
+        <div class="pm-chart dash-skeleton" id="ch-disp" data-draw="ch-disp" data-source="congresos"></div>
+      </div>
+      <div class="pm-card" id="card-patro">
+        <h2 class="pm-h">Patrocinadores IEEE con más artículos identificados</h2>
+        <p class="pm-note">Un congreso cuenta para cada patrocinador que lo respalda.</p>
+        <div class="pm-chart list dash-skeleton" id="ch-patro" data-draw="ch-patro" data-source="patrocinadores"></div>
+      </div>
+      <div class="pm-card wide" id="card-tabla-congresos">
+        <h2 class="pm-h">Todos los congresos con artículos identificados</h2>
+        <p class="pm-note">Pulsa una fila para ver sus artículos. «Días» es el tiempo entre el envío y la aceptación según la web del congreso.</p>
+        <div class="pm-controls"><input class="pm-input" data-q="cong" type="search" placeholder="Buscar congreso, país, ciudad o patrocinador" aria-label="Buscar congresos"></div>
+        <div class="pm-tablebox">
+          <table class="pm-table" data-tbl="cong" data-source="congresos" data-row-key="congreso_doi">
+            <thead><tr>
+              <th data-field="congreso"><button>Congreso</button></th>
+              <th data-field="anio" class="opt"><button>Año</button></th>
+              <th data-field="identificados" class="num"><button>Identificados</button></th>
+              <th data-field="retractados" class="num"><button>Retractados</button></th>
+              <th data-field="total_articulos" class="num opt"><button>Total actas</button></th>
+              <th data-field="pct_identificados" class="num"><button>% identif.</button></th>
+              <th data-field="pct_seis_autores" class="num opt"><button>% seis autores</button></th>
+              <th data-field="pais" class="opt"><button>País</button></th>
+              <th data-field="patrocinador_principal" class="opt"><button>Patrocinador</button></th>
+              <th data-field="dias_aceptacion" class="num opt"><button>Días</button></th>
+            </tr></thead>
+            <tbody data-draw="tb-cong"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pm-page" id="articulos" hidden>
+    <div class="pm-card" id="card-tabla-ofertas">
+      <h2 class="pm-h">Ofertas y artículos emparejados</h2>
+      <p class="pm-note">Cada fila es una oferta única. «Similitud» es la similitud coseno (Sentence-BERT) entre el título ofertado y el publicado.</p>
+      <div class="pm-controls">
+        <input class="pm-input" data-q="of" type="search" placeholder="Buscar en títulos, DOI o congreso" aria-label="Buscar ofertas">
+        <select class="pm-select pm-estado" aria-label="Estado del emparejamiento">
+          <option value="emparejadas">Con artículo identificado</option>
+          <option value="definitely">Solo «definitely»</option>
+          <option value="probably">Solo «probably»</option>
+          <option value="sin emparejar">Sin identificar</option>
+          <option value="todas">Todas las ofertas</option>
+        </select>
+        <button class="pm-chip is-off" data-draw="chip-cong" data-source="congresos" aria-label="Quitar filtro de congreso"></button>
+        <button class="pm-btn pm-reset">Restablecer</button>
+        <span class="pm-count" data-draw="cuenta-of" data-source="ofertas">—</span>
+      </div>
+      <div class="pm-tablebox">
+        <table class="pm-table" data-tbl="of" data-source="ofertas" data-row-key="n">
+          <thead><tr>
+            <th data-field="n" class="num"><button>N</button></th>
+            <th data-field="fecha_oferta" class="opt"><button>Fecha oferta</button></th>
+            <th data-field="titulo_oferta"><button>Título ofertado</button></th>
+            <th data-field="titulo_publicado" class="opt"><button>Título publicado</button></th>
+            <th data-field="congreso"><button>Congreso</button></th>
+            <th data-field="doi" class="opt"><button>DOI</button></th>
+            <th data-field="sbert" class="num opt"><button>Similitud</button></th>
+            <th data-field="estado"><button>Estado</button></th>
+          </tr></thead>
+          <tbody data-draw="tb-of"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="pm-page" id="coautoria" hidden>
+    <div class="pm-grid">
+      <div class="pm-card wide" id="card-aut">
+        <h2 class="pm-h">Número de coautores: identificados frente al conjunto de IEEE</h2>
+        <p class="pm-note">Porcentaje de artículos según su número de autores. Referencia: todos los congresos IEEE de 50 o más artículos celebrados entre 2010 y 2025 (Crossref, febrero de 2026).</p>
+        <ul class="pm-legend"><li><span class="pm-sw" data-draw="sw" data-i="0"></span>Artículos identificados</li><li><span class="pm-sw" data-draw="sw" data-muted="1"></span>Todos los congresos IEEE</li></ul>
+        <div class="pm-chart dash-skeleton" id="ch-aut" data-draw="ch-aut" data-source="dist_autores"></div>
+      </div>
+      <div class="pm-card wide" id="card-fig7">
+        <h2 class="pm-h">Peso de los artículos con N autores en cada congreso IEEE</h2>
+        <p class="pm-note">Un punto por congreso de 50 o más artículos (2010-2025). Resaltados, los congresos con algún artículo identificado. Equivale a la figura 7 del artículo.</p>
+        <div class="pm-controls">
+          <select class="pm-select pm-naut" aria-label="Número de autores">
+            <option value="a3">Tres autores</option>
+            <option value="a4">Cuatro autores</option>
+            <option value="a5">Cinco autores</option>
+            <option value="a6" selected>Seis autores</option>
+            <option value="a7">Siete autores</option>
+            <option value="a8">Ocho autores</option>
+          </select>
+          <ul class="pm-legend"><li><span class="pm-sw" data-draw="sw" data-i="0"></span>Con artículos identificados</li><li><span class="pm-sw" data-draw="sw" data-muted="1"></span>Resto de congresos</li></ul>
+        </div>
+        <div class="pm-chart tall dash-skeleton" id="ch-fig7" data-draw="ch-fig7" data-source="ieee"></div>
+      </div>
+      <div class="pm-card wide" id="card-umbral">
+        <h2 class="pm-h">Congresos con una proporción anómala de artículos de seis autores</h2>
+        <p class="pm-note">Porcentaje de congresos IEEE de cada año en los que los artículos de seis autores superan el umbral elegido: <b data-draw="umbral-label">—</b></p>
+        <div class="pm-controls"><input class="pm-range pm-umbral" type="range" min="10" max="60" step="5" value="30" aria-label="Umbral de artículos de seis autores"></div>
+        <div class="pm-chart dash-skeleton" id="ch-umbral" data-draw="ch-umbral" data-source="ieee"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pm-page" id="canales" hidden>
+    <p class="pm-note">Los autores advierten de que la recogida no es exhaustiva: estos datos no sirven para comparar el peso de cada plataforma.</p>
+    <div class="pm-grid">
+      <div class="pm-card" id="card-plat">
+        <h2 class="pm-h">Canales por plataforma</h2>
+        <div class="pm-chart list dash-skeleton" id="ch-plat" data-draw="ch-plat" data-source="por_plataforma"></div>
+      </div>
+      <div class="pm-card" id="card-tabla-canales">
+        <h2 class="pm-h">Canales de venta de autorías</h2>
+        <div class="pm-controls"><input class="pm-input" data-q="can" type="search" placeholder="Buscar canal, plataforma o tipo" aria-label="Buscar canales"></div>
+        <div class="pm-tablebox">
+          <table class="pm-table" data-tbl="can" data-source="canales" data-row-key="id">
+            <thead><tr>
+              <th data-field="id" class="num opt"><button>Id</button></th>
+              <th data-field="nombre"><button>Canal</button></th>
+              <th data-field="plataforma"><button>Plataforma</button></th>
+              <th data-field="tipo" class="opt"><button>Tipo</button></th>
+              <th data-field="estado_actividad"><button>Actividad</button></th>
+              <th data-field="seguidores" class="num"><button>Seguidores</button></th>
+            </tr></thead>
+            <tbody data-draw="tb-can"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pm-page" id="paises" hidden>
+    <div class="pm-kpis">
+      <div class="pm-card"><p class="pm-kpi-l">Artículos IEEE en OpenAlex</p><p class="pm-kpi-v" data-draw="oak" data-source="oa_kpis" data-field="articulos" data-row="0">—</p><p class="pm-kpi-s">De los identificados con DOI</p></div>
+      <div class="pm-card"><p class="pm-kpi-l">Países de afiliación</p><p class="pm-kpi-v" data-draw="oak" data-source="oa_kpis" data-field="paises" data-row="0">—</p><p class="pm-kpi-s">Institución o, si falta, país del autor</p></div>
+      <div class="pm-card"><p class="pm-kpi-l">Instituciones distintas</p><p class="pm-kpi-v" data-draw="oak" data-source="oa_kpis" data-field="instituciones" data-row="0">—</p><p class="pm-kpi-s">Agrupadas por ROR</p></div>
+      <div class="pm-card"><p class="pm-kpi-l">Artículos con autores de dos o más países</p><p class="pm-kpi-v" data-draw="oak" data-fmt="pct" data-source="oa_kpis" data-field="pct_varios_paises" data-row="0">—</p><p class="pm-kpi-s">Sobre los artículos con país conocido</p></div>
+      <div class="pm-card"><p class="pm-kpi-l">Artículos con afiliación española</p><p class="pm-kpi-v" data-draw="oak" data-source="oa_kpis" data-field="articulos_espana" data-row="0">—</p><p class="pm-kpi-s">Tras revisar a mano las afiliaciones</p></div>
+    </div>
+    <div class="pm-grid">
+      <div class="pm-card" id="card-paises">
+        <h2 class="pm-h">Países con más artículos identificados</h2>
+        <p class="pm-note">Porcentaje de artículos con al menos una afiliación del país. Un artículo cuenta para todos sus países, por lo que la suma supera el 100 %.</p>
+        <div class="pm-chart list dash-skeleton" id="ch-paises" data-draw="ch-paises" data-source="oa_paises"></div>
+      </div>
+      <div class="pm-card" id="card-europa">
+        <h2 class="pm-h">Países europeos</h2>
+        <p class="pm-note">Artículos con al menos una afiliación de cada país europeo. España, resaltada.</p>
+        <div class="pm-chart list dash-skeleton" id="ch-europa" data-draw="ch-europa" data-source="oa_europa"></div>
+      </div>
+      <div class="pm-card wide" id="card-espana">
+        <h2 class="pm-h">Artículos con afiliación española</h2>
+        <p class="pm-note">Todas las autorías que OpenAlex asigna a instituciones españolas, revisadas a mano frente a la afiliación literal. Aparecer en un artículo identificado no prueba por sí solo que el autor comprara la autoría: la afiliación pudo añadirse sin su conocimiento. Se omiten los nombres de los autores.</p>
+        <div class="pm-tablebox">
+          <table class="pm-table" data-source="espana" data-row-key="id">
+            <thead><tr>
+              <th data-field="congreso">Congreso</th>
+              <th data-field="titulo">Título</th>
+              <th data-field="institucion">Institución (OpenAlex)</th>
+              <th data-field="posicion" class="opt">Posición</th>
+              <th data-field="retractado">Retractado</th>
+              <th data-field="afiliacion_literal" class="opt">Afiliación literal</th>
+              <th data-field="revision">Revisión</th>
+            </tr></thead>
+            <tbody data-draw="tb-es"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="pm-card" id="card-tabla-paises">
+        <h2 class="pm-h">Todos los países</h2>
+        <div class="pm-tablebox">
+          <table class="pm-table" data-source="oa_paises" data-row-key="pais">
+            <thead><tr>
+              <th data-field="pais">País</th>
+              <th data-field="articulos" class="num">Artículos</th>
+              <th data-field="pct_articulos" class="num">% artículos</th>
+              <th data-field="autorias" class="num opt">Autorías</th>
+              <th data-field="retractados" class="num">Retractados</th>
+            </tr></thead>
+            <tbody data-draw="tb-paises"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="pm-card" id="card-tabla-inst">
+        <h2 class="pm-h">Las 30 instituciones con más artículos</h2>
+        <div class="pm-tablebox">
+          <table class="pm-table" data-source="oa_instituciones" data-row-key="institucion">
+            <thead><tr>
+              <th data-field="institucion">Institución</th>
+              <th data-field="pais" class="opt">País</th>
+              <th data-field="articulos" class="num">Artículos</th>
+              <th data-field="autorias" class="num opt">Autorías</th>
+            </tr></thead>
+            <tbody data-draw="tb-inst"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <p class="pm-note">Afiliaciones de OpenAlex consultadas en noviembre de 2026 a partir de los DOI del estudio. Los autores del artículo usaron Dimensions, por lo que los porcentajes pueden diferir algo de los publicados. Ninguno de los congresos IEEE celebrados en España figura entre los congresos con artículos identificados.</p>
+  </section>
+  <footer class="pm-foot">
+    <p><b>Autoría del dashboard.</b> Diseño, procesamiento de datos y visualización: <a href="https://orcid.org/0000-0003-2461-8553">Ángel M. Delgado-Vázquez</a> (ORCID 0000-0003-2461-8553), Universidad Pablo de Olavide, Sevilla.</p>
+    <p><b>Datos del estudio.</b> Ofertas, canales, congresos y estadísticas de Crossref proceden del conjunto de datos publicado por Anna Abalkina, Marie Kunešová, Yagmur Ozturk y Solal Pirelli junto con su artículo «Opening Pandora’s box: Paper mills in conference proceedings», <i>Accountability in Research</i>, 33(8), 2026, <a href="https://doi.org/10.1080/08989621.2026.2733727">https://doi.org/10.1080/08989621.2026.2733727</a>. Se distribuyen bajo licencia <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es">CC BY-NC-SA 4.0</a>; los ficheros derivados de este repositorio mantienen esa licencia. Este trabajo no está avalado por los autores del estudio.</p>
+    <p><b>Afiliaciones y retracciones.</b> Obtenidas de <a href="https://openalex.org">OpenAlex</a> (CC0) a partir de los DOI del estudio, consulta de noviembre de 2026. La revisión de las afiliaciones españolas es manual. <i>Nature</i> informó el 30 de octubre de 2026 de la retracción por IEEE de al menos 1.417 ponencias el 23 de octubre (<a href="https://www.nature.com/articles/d41586-026-03455-8">Naddaf, 2026</a>).</p>
+    <p>Código: licencia MIT · <a href="https://github.com/adelvaz/paper-mills-ieee-dashboard">Repositorio en GitHub</a></p>
+  </footer>
+</div>
+
+<script src="js/dash-shim.js"></script>
+<script src="js/base.js"></script>
+<script src="js/calcs.js"></script>
+<script src="js/draw.js"></script>
+<script src="js/paises.js"></script>
+<script src="js/ui.js"></script>
+</div>
+</body>
+</html>

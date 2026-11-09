@@ -1,0 +1,5 @@
+# Descarga intermedia de OpenAlex (contiene nombres de autores): no se publica
+scripts/autorias_openalex.csv
+scripts/no_encontrados.txt
+__pycache__/
+.DS_Store

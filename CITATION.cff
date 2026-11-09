@@ -1,0 +1,40 @@
+cff-version: 1.2.0
+message: "Si usas este dashboard, cítalo así y cita también el estudio original del que proceden los datos."
+title: "Paper mills en congresos IEEE: dashboard interactivo"
+type: software
+authors:
+  - family-names: "Delgado-Vázquez"
+    given-names: "Ángel M."
+    orcid: "https://orcid.org/0000-0003-2461-8553"
+    affiliation: "Universidad Pablo de Olavide"
+date-released: 2026-11-10
+version: "1.0.0"
+license: MIT
+repository-code: "https://github.com/adelvaz/paper-mills-ieee-dashboard"
+url: "https://adelvaz.github.io/paper-mills-ieee-dashboard/"
+keywords:
+  - paper mills
+  - research integrity
+  - retractions
+  - IEEE
+  - authorship for sale
+references:
+  - type: article
+    title: "Opening Pandora’s box: Paper mills in conference proceedings"
+    authors:
+      - family-names: "Abalkina"
+        given-names: "Anna"
+      - family-names: "Kunešová"
+        given-names: "Marie"
+      - family-names: "Ozturk"
+        given-names: "Yagmur"
+      - family-names: "Pirelli"
+        given-names: "Solal"
+    journal: "Accountability in Research"
+    volume: 33
+    issue: 8
+    year: 2026
+    doi: "10.1080/08989621.2026.2733727"
+  - type: database
+    title: "OpenAlex"
+    url: "https://openalex.org"
